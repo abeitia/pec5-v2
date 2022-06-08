@@ -1,6 +1,6 @@
 {
-  "name": "Futurama Web App",
-  "short_name": "Futurama",
+  "name": "Rick & Morty Web App",
+  "short_name": "Rick & Morty",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",
@@ -54,12 +54,7 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"
-    },
- {
-      "src": "assets/icons/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "maskable any"
     }
+
   ]
 }

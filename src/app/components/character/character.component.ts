@@ -1,10 +1,14 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Character, Quote } from 'src/app/models/futurama.interface';
 import { CharactersService } from 'src/app/services/characters.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import {
+  RickMorty,
+  Character,
+  Episode,
+} from 'src/app/models/rickandmorty.interface';
 
 @Component({
   selector: 'app-character',
@@ -13,12 +17,15 @@ import { MatSort } from '@angular/material/sort';
 })
 export class CharacterComponent implements OnInit {
   character: any = {};
+  episodes: any = [];
+  episodesids: any = [];
+  episodesList: any = [];
 
-  quotesList: any = [];
+
   panelOpenState = false;
-  displayedColumns: string[] = ['text'];
+displayedColumns: string[] = ['episode', 'name', 'air_date' ];
 
-  dataSource!: MatTableDataSource<Quote>;
+  dataSource!: MatTableDataSource<Episode>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -27,30 +34,51 @@ export class CharacterComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
-    this.quotesList = new Array<Quote>();
+    this.episodesList = new Array<Episode>();
   }
 
-  ngOnInit(): void {
+ ngOnInit(): void {
     const identifier = this.activatedRoute.snapshot.paramMap.get('id');
-
+    
     if (identifier) {
       this.charactersService
         .getCharacterById(identifier)
         .subscribe((character: Character) => {
           if (!character) {
             return this.router.navigateByUrl('/');
-          } else {
-            this.character = character;
-            this.quotesList = character.sayings.map((quote) => ({
-              text: quote,
-            }));
-            this.dataSource = new MatTableDataSource<Quote>(this.quotesList);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
           }
+
+          this.character = character;
+          this.episodes = character.episode;
+
+          this.episodesids = this.episodes.map((x: string) => {
+            const y = x.match(/\d+/);
+            let z;
+            if (y) {
+            //   console.log(y[0]);
+              z = +y[0];
+            }
+            return z;
+          });
+
+         
+
+
+          this.charactersService
+            .getEpisodes('[' + this.episodesids.toString() + ']')
+            .subscribe((episodes) => {
+              this.episodesList = episodes;
+
+              this.dataSource = new MatTableDataSource<Episode>(
+                this.episodesList
+              );
+              this.dataSource.paginator = this.paginator;
+              this.dataSource.sort = this.sort;
+            });
 
           return '';
         });
     }
   }
 }
+

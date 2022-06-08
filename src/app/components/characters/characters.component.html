@@ -1,5 +1,5 @@
 <div class="container">
-  <h1>Futurama Characters</h1>
+  <h1>Rick & Morty Characters</h1>
 
  <div class="spinner">
     <div fxLayout="column" fxLayoutAlign="center center" *ngIf="processing">
@@ -20,7 +20,7 @@
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>NAME</th>
-      <td class="pointer" (click)="showCharacter(character.id)" mat-cell *matCellDef="let character">{{ character.name.first }} {{ character.name.middle}} {{ character.name.last }}</td>
+      <td class="pointer" (click)="showCharacter(character.id)" mat-cell *matCellDef="let character">{{ character.name }}</td>
     </ng-container>
 
 

@@ -1,5 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Character } from 'src/app/models/futurama.interface';
+import { take } from 'rxjs';
+import { Character } from 'src/app/models/rickandmorty.interface';
 import { CharactersService } from 'src/app/services/characters.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -67,11 +68,13 @@ export class CharactersComponent implements OnInit {
     this.router.navigateByUrl('/character/' + id);
   }
 
-  private loadCharacters(): void {
+
+ private loadCharacters(): void {
     this.charactersService
       .getAllCharacters()
-      .subscribe((characters: Character[]) => {
-        this.characters = characters;
+.pipe(take(1))
+      .subscribe((res: any) => {
+        this.characters = res.results;
         this.processing = false;
         this.animationState = 'loaded';
 
@@ -80,4 +83,5 @@ export class CharactersComponent implements OnInit {
         this.dataSource.sort = this.sort;
       });
   }
+
 }

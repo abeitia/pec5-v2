@@ -35,9 +35,9 @@
     {
       "name": "images-api",
       "urls": [
-        "https://static.wikia.nocookie.net/enfuturama/images/**",
-        "https://api.sampleapis.com/futurama/characters",
-        "https://upload.wikimedia.org/wikipedia/en"
+        "https://rickandmortyapi.com/api/character/avatar/**",
+        "https://rickandmortyapi.com/api/characters/**",
+        "https://rickandmortyapi.com/api/episode/**"
       ],
       "cacheConfig": {
         "maxSize": 10,
