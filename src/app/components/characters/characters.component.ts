@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { take } from 'rxjs';
+import { catchError, EMPTY, take } from 'rxjs';
 import { Character } from 'src/app/models/rickandmorty.interface';
 import { CharactersService } from 'src/app/services/characters.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -68,11 +68,17 @@ export class CharactersComponent implements OnInit {
     this.router.navigateByUrl('/character/' + id);
   }
 
-
- private loadCharacters(): void {
+  private loadCharacters(): void {
     this.charactersService
       .getAllCharacters()
-.pipe(take(1))
+      .pipe(
+        take(1),
+        catchError((err) => {
+          console.log("Error => ", err);
+          this.processing = false;
+          return EMPTY;
+        })
+      )
       .subscribe((res: any) => {
         this.characters = res.results;
         this.processing = false;
@@ -83,5 +89,4 @@ export class CharactersComponent implements OnInit {
         this.dataSource.sort = this.sort;
       });
   }
-
 }
