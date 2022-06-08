@@ -18,7 +18,7 @@ export class CharacterComponent implements OnInit {
   private episodes: any = [];
 
   panelOpenState = false;
-  displayedColumns: string[] = ['episode', 'name', 'air_date'];
+  displayedColumns: string[] = ['episode',  'air_date'];
 
   dataSource!: MatTableDataSource<Episode>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
