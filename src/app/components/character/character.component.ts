@@ -4,11 +4,7 @@ import { CharactersService } from 'src/app/services/characters.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import {
-  RickMorty,
-  Character,
-  Episode,
-} from 'src/app/models/rickandmorty.interface';
+import { Character, Episode } from 'src/app/models/rickandmorty.interface';
 
 @Component({
   selector: 'app-character',
@@ -17,13 +13,12 @@ import {
 })
 export class CharacterComponent implements OnInit {
   character: any = {};
-  episodes: any = [];
-  episodesids: any = [];
-  episodesList: any = [];
-
+  private episodesids: any = [];
+  private episodesList: any = [];
+  private episodes: any = [];
 
   panelOpenState = false;
-displayedColumns: string[] = ['episode', 'name', 'air_date' ];
+  displayedColumns: string[] = ['episode', 'name', 'air_date'];
 
   dataSource!: MatTableDataSource<Episode>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -37,9 +32,9 @@ displayedColumns: string[] = ['episode', 'name', 'air_date' ];
     this.episodesList = new Array<Episode>();
   }
 
- ngOnInit(): void {
+  ngOnInit(): void {
     const identifier = this.activatedRoute.snapshot.paramMap.get('id');
-    
+
     if (identifier) {
       this.charactersService
         .getCharacterById(identifier)
@@ -47,38 +42,35 @@ displayedColumns: string[] = ['episode', 'name', 'air_date' ];
           if (!character) {
             return this.router.navigateByUrl('/');
           }
-
           this.character = character;
           this.episodes = character.episode;
-
-          this.episodesids = this.episodes.map((x: string) => {
-            const y = x.match(/\d+/);
-            let z;
-            if (y) {
-            //   console.log(y[0]);
-              z = +y[0];
-            }
-            return z;
-          });
-
-         
-
-
-          this.charactersService
-            .getEpisodes('[' + this.episodesids.toString() + ']')
-            .subscribe((episodes) => {
-              this.episodesList = episodes;
-
-              this.dataSource = new MatTableDataSource<Episode>(
-                this.episodesList
-              );
-              this.dataSource.paginator = this.paginator;
-              this.dataSource.sort = this.sort;
-            });
-
+          this.setParams();
+          this.getEpisodes();
           return '';
         });
     }
   }
-}
 
+  setParams() {
+    this.episodesids = this.episodes.map((x: string) => {
+      const y = x.match(/\d+/);
+      let z;
+      if (y) {
+        z = +y[0];
+      }
+      return z;
+    });
+  }
+
+  getEpisodes() {
+    this.charactersService
+      .getEpisodes('[' + this.episodesids.toString() + ']')
+      .subscribe((episodes) => {
+        this.episodesList = episodes;
+
+        this.dataSource = new MatTableDataSource<Episode>(this.episodesList);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+  }
+}

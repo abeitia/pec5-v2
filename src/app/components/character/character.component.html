@@ -37,21 +37,16 @@
           </mat-tab>
           <mat-tab label="Episodes">
             <table mat-table [dataSource]="dataSource" matSort>
-              <!--Episode ID Column -->
+              <!--Episode Column -->
               <ng-container matColumnDef="episode">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header>
                   Episode
                 </th>
                 <td mat-cell *matCellDef="let episode">
-                  {{ episode.episode }}
+                  {{ episode.episode }} - {{ episode.name }} 
                 </td>
               </ng-container>
-
-              <!-- Name Column -->
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-                <td mat-cell *matCellDef="let episode">{{ episode.name }}</td>
-              </ng-container>
+          
 
               <!-- Air Date Column -->
               <ng-container matColumnDef="air_date">
